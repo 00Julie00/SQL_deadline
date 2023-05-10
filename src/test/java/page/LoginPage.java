@@ -35,14 +35,13 @@ public class LoginPage {
                 .shouldHave(text("Ошибка! Неверно указан логин или пароль"));
     }
     public void invalidPassword(DataHelper.AuthInfo info) {
-        String deleteString = Keys.chord(Keys.CONTROL, "a") + Keys.DELETE;
         loginField.setValue(info.getLogin());
         passwordField.setValue(info.getPassword());
         loginButton.click();
-        passwordField.sendKeys(deleteString);
+        passwordField.doubleClick().sendKeys(Keys.BACK_SPACE);
         passwordField.setValue(info.getPassword());
         loginButton.click();
-        passwordField.sendKeys(deleteString);
+        passwordField.doubleClick().sendKeys(Keys.BACK_SPACE);
         passwordField.setValue(info.getPassword());
         loginButton.click();
         errorBox.shouldBe(visible, Duration.ofSeconds(30));
