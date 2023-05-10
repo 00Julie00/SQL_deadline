@@ -1,10 +1,8 @@
 package page;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import lombok.val;
 import data.DataHelper;
+import org.openqa.selenium.Keys;
 
 import java.time.Duration;
 
@@ -26,7 +24,6 @@ public class LoginPage {
         return new VerificationPage();
     }
 
-
     public void invalidLogin(DataHelper.AuthInfo info) {
         loginField.setValue(info.getLogin());
         passwordField.setValue(info.getPassword());
@@ -37,4 +34,23 @@ public class LoginPage {
         $("[data-test-id=error-notification]>.notification__content")
                 .shouldHave(text("Ошибка! Неверно указан логин или пароль"));
     }
+    public void invalidPassword(DataHelper.AuthInfo info) {
+        String deleteString = Keys.chord(Keys.CONTROL, "a") + Keys.DELETE;
+        loginField.setValue(info.getLogin());
+        passwordField.setValue(info.getPassword());
+        loginButton.click();
+        passwordField.sendKeys(deleteString);
+        passwordField.setValue(info.getPassword());
+        loginButton.click();
+        passwordField.sendKeys(deleteString);
+        passwordField.setValue(info.getPassword());
+        loginButton.click();
+        errorBox.shouldBe(visible, Duration.ofSeconds(30));
+        $("[data-test-id=error-notification]>.notification__content")
+                .shouldHave(text("Ошибка! Неверно указан логин или пароль"));
+        $("[data-test-id=error-notification]>.notification__content")
+                .shouldHave(text("Превышено допустимое количество попыток. Вход в личный кабинет заблокирован. Обратитесь в службу поддержки банка"));
+    }
+
+
 }

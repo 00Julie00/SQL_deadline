@@ -1,5 +1,6 @@
 package test;
 
+import com.codeborne.selenide.Configuration;
 import lombok.val;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,9 +19,7 @@ public class AppTest {
     }
 
     @AfterAll
-    static void clear() {
-        SqlRequest.clearBD();
-    }
+    static void clear() {SqlRequest.clearBD();}
 
     @Test
     void shouldRunAppWithValidData() {
@@ -37,6 +36,13 @@ public class AppTest {
         val loginPage = new LoginPage();
         val invalidAuthInfo = DataHelper.getInvalidAuthInfo();
         loginPage.invalidLogin(invalidAuthInfo);
+    }
+
+    @Test
+    public void shouldGetLockIfAnInvalidPasswordIsEnteredThreeTimes() {
+        val loginPage = new LoginPage();
+        val authInfo = DataHelper.getInvalidAuthInfo();
+        loginPage.invalidPassword(authInfo);
     }
 
     @Test

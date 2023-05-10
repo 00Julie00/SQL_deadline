@@ -27,9 +27,8 @@ public class VerificationPage {
 
     public void invalidVerify(String verificationCode) {
         codeField.setValue(verificationCode);
-        sleep(15000);
         verifyButton.click();
-        errorBox.shouldBe(visible, ofSeconds(15));
+        errorBox.shouldBe(visible, ofSeconds(30));
         $("[data-test-id=error-notification]>.notification__title")
                 .shouldHave(text("Ошибка"));
         $("[data-test-id=error-notification]>.notification__content")
